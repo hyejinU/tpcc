@@ -99,17 +99,17 @@ int neword( int t_num,
  	struct timespec tbuf1,tbuf_start;
 	clock_t clk1,clk_start;	
 	
- 	struct timespec t1, t2;
-	clock_t clkk1, clkk2;	
-	unsigned long c1=0;
-	unsigned long c2=0;
-	unsigned long c3=0;
-	unsigned long c4=0;
-	unsigned long c5=0;
-	unsigned long c6=0;
-	unsigned long c7=0;
-	unsigned long c8=0;
-	unsigned long c9=0;
+ 	// struct timespec t1, t2;
+	// clock_t clkk1, clkk2;	
+	// unsigned long c1=0;
+	// unsigned long c2=0;
+	// unsigned long c3=0;
+	// unsigned long c4=0;
+	// unsigned long c5=0;
+	// unsigned long c6=0;
+	// unsigned long c7=0;
+	// unsigned long c8=0;
+	// unsigned long c9=0;
 
 
 	MYSQL_STMT*   mysql_stmt;
@@ -124,7 +124,7 @@ int neword( int t_num,
         gettimestamp(datetime, STRFTIME_FORMAT, TIMESTAMP_LEN);
 	clk_start = clock_gettime(CLOCK_REALTIME, &tbuf_start );
 
-	clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+	// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 
 	proceed = 1;
 	/*EXEC_SQL SELECT c_discount, c_last, c_credit, w_tax
@@ -146,8 +146,8 @@ int neword( int t_num,
 	if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 	if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
 
-	clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-	c1 = t2.tv_nsec - t1.tv_nsec;
+	// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+	// c1 = t2.tv_nsec - t1.tv_nsec;
 
 	if( mysql_stmt_store_result(mysql_stmt) ) goto sqlerr;
 	memset(column, 0, sizeof(MYSQL_BIND) * 4); /* initialize */
@@ -181,7 +181,7 @@ int neword( int t_num,
 #endif
 
 	// fprintf(stderr,"SELECT FOR UPDATE in %d, %d\n", d_id, w_id);
-	clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+	// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 	proceed = 2;
 	/*EXEC_SQL SELECT d_next_o_id, d_tax INTO :d_next_o_id, :d_tax
 	        FROM district
@@ -197,8 +197,8 @@ int neword( int t_num,
 	param[1].buffer = &w_id;
 	if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 	if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
-	clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-	c2 = t2.tv_nsec - t1.tv_nsec;
+	// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+	// c2 = t2.tv_nsec - t1.tv_nsec;
 
 	if( mysql_stmt_store_result(mysql_stmt) ) goto sqlerr;
 	memset(column, 0, sizeof(MYSQL_BIND) * 2); /* initialize */
@@ -222,7 +222,7 @@ int neword( int t_num,
 
 	
 	// fprintf(stderr,"SELECT d_next_o_id, d_tax FROM district WHERE d_id = %d AND d_w_id = %d FOR UPDATE;\n", d_id, w_id);
-	clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+	// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 	proceed = 3;
 	/*EXEC_SQL UPDATE district SET d_next_o_id = :d_next_o_id + 1
 	        WHERE d_id = :d_id 
@@ -238,8 +238,8 @@ int neword( int t_num,
 	param[2].buffer = &w_id;
 	if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 	if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
-	clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-	c3 = t2.tv_nsec - t1.tv_nsec;
+	// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+	// c3 = t2.tv_nsec - t1.tv_nsec;
 
 	o_id = d_next_o_id;
 	
@@ -251,7 +251,7 @@ int neword( int t_num,
 #ifdef DEBUG
 	printf("n %d\n",proceed);
 #endif
-	clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+	// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 	proceed = 4;
 	/*EXEC_SQL INSERT INTO orders (o_id, o_d_id, o_w_id, o_c_id,
 			             o_entry_d, o_ol_cnt, o_all_local)
@@ -278,15 +278,15 @@ int neword( int t_num,
 	param[6].buffer = &o_all_local;
 	if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 	if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
-	clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-	c4 = t2.tv_nsec - t1.tv_nsec;
+	// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+	// c4 = t2.tv_nsec - t1.tv_nsec;
 	
 	// fprintf(stderr,"INSERT INTO orders (o_id, o_d_id, o_w_id, o_c_id, o_entry_d, o_ol_cnt, o_all_local VALUES(%d, %d, %d, %d, %s, %d, %d);\n", o_id, d_id, w_id, c_id, datetime, o_ol_cnt, o_all_local);
 
 #ifdef DEBUG
 	printf("n %d\n",proceed);
 #endif
-	clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+	// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 	proceed = 5;
 	/* EXEC_SQL INSERT INTO new_orders (no_o_id, no_d_id, no_w_id)
 	   VALUES (:o_id,:d_id,:w_id); */
@@ -302,8 +302,8 @@ int neword( int t_num,
 	if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 	if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
 	
-	clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-	c5 = t2.tv_nsec - t1.tv_nsec;
+	// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+	// c5 = t2.tv_nsec - t1.tv_nsec;
 
 
 	/* sort orders to avoid DeadLock */
@@ -333,7 +333,7 @@ int neword( int t_num,
 		ol_quantity = qty[ol_num_seq[ol_number - 1]];
 
 		/* EXEC SQL WHENEVER NOT FOUND GOTO invaliditem; */
-		clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+		// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 		proceed = 6;
 		/*EXEC_SQL SELECT i_price, i_name, i_data
 			INTO :i_price, :i_name, :i_data
@@ -347,8 +347,8 @@ int neword( int t_num,
 		if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 		if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
 		
-		clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-		c6 += t2.tv_nsec - t1.tv_nsec;
+		// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+		// c6 += t2.tv_nsec - t1.tv_nsec;
 
 		if( mysql_stmt_store_result(mysql_stmt) ) goto sqlerr;
 		memset(column, 0, sizeof(MYSQL_BIND) * 3); /* initialize */
@@ -386,7 +386,7 @@ int neword( int t_num,
 #ifdef DEBUG
 		printf("n %d\n",proceed);
 #endif
-		clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+		// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 		proceed = 7;
 		/*EXEC_SQL SELECT s_quantity, s_data, s_dist_01, s_dist_02,
 		                s_dist_03, s_dist_04, s_dist_05, s_dist_06,
@@ -407,8 +407,8 @@ int neword( int t_num,
 		param[1].buffer = &ol_supply_w_id;
 		if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 		if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
-		clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-		c7 += t2.tv_nsec - t1.tv_nsec;
+		// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+		// c7 += t2.tv_nsec - t1.tv_nsec;
 
 		if( mysql_stmt_store_result(mysql_stmt) ) goto sqlerr;
 		memset(column, 0, sizeof(MYSQL_BIND) * 12); /* initialize */
@@ -481,7 +481,7 @@ int neword( int t_num,
 #ifdef DEBUG
 		printf("n %d\n",proceed);
 #endif
-		clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+		// clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 		proceed = 8;
 		/*EXEC_SQL UPDATE stock SET s_quantity = :s_quantity
 		        WHERE s_i_id = :ol_i_id 
@@ -497,8 +497,8 @@ int neword( int t_num,
 		param[2].buffer = &ol_supply_w_id;
 		if( mysql_stmt_bind_param(mysql_stmt, param) ) goto sqlerr;
 		if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
-		clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-		c8 += t2.tv_nsec - t1.tv_nsec;
+		// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+		// c8 += t2.tv_nsec - t1.tv_nsec;
 
 
 		ol_amount = ol_quantity * i_price * (1 + w_tax + d_tax) * (1 - c_discount);
@@ -510,7 +510,7 @@ int neword( int t_num,
 #ifdef DEBUG
 		printf("n %d\n",proceed);
 #endif
-		clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
+		// // clkk1 = clock_gettime(CLOCK_REALTIME, &t1 );
 		proceed = 9;
 		/*EXEC_SQL INSERT INTO order_line (ol_o_id, ol_d_id, ol_w_id, 
 						 ol_number, ol_i_id, 
@@ -545,8 +545,8 @@ int neword( int t_num,
 		if( mysql_stmt_execute(mysql_stmt) ) goto sqlerr;
 
 		
-		clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
-		c9 += t2.tv_nsec - t1.tv_nsec;
+		// clkk2 = clock_gettime(CLOCK_REALTIME, &t2 );
+		// c9 += t2.tv_nsec - t1.tv_nsec;
 
 
 	}			/* End Order Lines */
@@ -564,15 +564,15 @@ int neword( int t_num,
 			tbuf_start.tv_sec, tbuf_start.tv_nsec);
 	}
 
-	fprintf(stderr,"%lu %lu %lu %lu %lu %lu %lu %lu %lu\n", c1/1000, 
-																	c2/1000, 
-																	c3/1000,
-																	c4/1000,
-																	c5/1000,
-																	c6/(unsigned long)o_ol_cnt/1000,
-																	c7/(unsigned long)o_ol_cnt/1000,
-																	c8/(unsigned long)o_ol_cnt/1000,
-																	c9/(unsigned long)o_ol_cnt/1000);
+	// fprintf(stderr,"%lu %lu %lu %lu %lu %lu %lu %lu %lu\n", c1/1000, 
+	// 																c2/1000, 
+	// 																c3/1000,
+	// 																c4/1000,
+	// 																c5/1000,
+	// 																c6/(unsigned long)o_ol_cnt/1000,
+	// 																c7/(unsigned long)o_ol_cnt/1000,
+	// 																c8/(unsigned long)o_ol_cnt/1000,
+	// 																c9/(unsigned long)o_ol_cnt/1000);
 
 	return (1);
 
